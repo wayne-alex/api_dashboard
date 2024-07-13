@@ -1,0 +1,68 @@
+.form-control {
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.copy-button i {
+    color: blue;
+}
+
+.card-body p i {
+    color: orange;
+}
+
+@keyframes showMessage {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.console-message {
+    border-left: 3px solid #3f51b5;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+//docs.html
+ body {
+            font-family: 'Courier New', monospace;
+            background-color: #282c34;
+            color: #abb2bf;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .code{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            max-width: 80vw;
+        }
+        .keyword {
+            color: #569CD6;
+            display: inline;
+        }
+        .string {
+            color: #CE9178;
+            display: inline;
+        }
+        .comment {
+            color: #6A9955;
+            display: inline;
+        }
+        .function {
+            color: #DCDCAA;
+            display: inline;
+        }
+        .exception {
+            color: #D16969;
+            display: inline;
+        }

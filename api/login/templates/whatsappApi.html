@@ -1,0 +1,316 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block content %}
+
+
+<style>
+    /* Style for the console window */
+ .console {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 5px;
+    max-height: 300px;
+    font-family: Arial, sans-serif; /* Change the font family here */
+    overflow-y: auto; /* Add this to enable vertical scrolling */
+}
+
+    /* Style for the copy button */
+    .copy-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+{% if not user %}
+<div class="main-panel">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><span class="mdi mdi-whatsapp"></span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Business Initiated Message</a>
+                    <a class="nav-link" href="{% url 'whatsappUser' %}">User Initiated Message</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <p class="h3">Send a business-initiated message.</p>
+    <div class="content-wrapper">
+        <p>Here, you can start a business-initiated conversation with your users. Business-initiated conversations
+            required the use of pre-approved templates until the user responds. Choose from one of our pre-approved
+            templates to start a business-initiated conversation. Once your customers reply, then you can send free form
+            messages for the next 24 hours after your original message.</p>
+
+        <div class="form-container" style="display: flex;">
+            <form method="post" action="" style="width: 40%; margin-right: 20px;">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="To" class="form-label">To:</label>
+                    <input type="number" class="form-control" id="To" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="From" class="form-label">From:</label>
+                    <input type="number" class="form-control" id="From" aria-describedby="emailHelp">
+                </div>
+
+                <div class="mb-3">
+                    <label for="messageBody" class="form-label">Message Body:</label>
+                    <textarea class="form-control" id="messageBody" style="height: 70px;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+
+            <div class="console-container"
+                 style="flex: 1; background-color: #000; color: #fff; padding: 10px; height: 300px; overflow-y: scroll;">
+                <p><strong>Request.</strong></p>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Python</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Node.js</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Php</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="mdi mdi-content-copy"></i></a>
+                    </li>
+                </ul>         <!-- Code or messages can be dynamically added here -->
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% else %}
+<div class="main-panel">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    <p class="h3">Wait for a user-initiated message.</p>
+    <div class="content-wrapper">
+        {% if account.sni == "" %}
+        <p>You do not have an SNI(Sandbox Name Indicator).Choose a unique symbol that users will use to send message to
+            your
+            sandbox.It can be simple as '<span><b>! ',' . '</b></span> .<br>Example of usage !hello world </p>
+
+        <div class="form-container" style="display: flex;">
+            <form method="post" action="" style="width: 40%; margin-right: 20px;">
+                {% csrf_token %}
+                <label for="SNI">SNI:</label> <br>
+                <div class="input-group mb-6">
+                    <input type="text" class="form-control" placeholder="" id="SNI" name="SNI">
+                </div>
+                <br>
+
+                <label for="SNI">Callback URL:</label> <br>
+                <p class="h6">without a callback url a default url will be used that is of our server ,you can change
+                    anytime</p>
+                <div class="input-group mb-6">
+                    <input type="text" class="form-control" placeholder="" id="callback_url" name="callback_url"
+                           value={{callback_url}}>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-info" id="submitButton">Submit SNI</button>
+            </form>
+        </div>
+
+
+        {% else %}
+
+        <div class="main-panel">
+            <p class="h3" id="messageHeader">Waiting for messages from your sandbox.</p>
+            <p class="lead">Your SNI symbol is "<b> {{account.sni}}</b> "</p>
+            <p class="lead">Your current callback_url is "<b> {{account.sni}}</b> "</p>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Launch demo modal
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="console" id="code-console" style="width: 1000px;">
+    <pre id="code" style="white-space: pre-wrap;">
+        <h3><strong>Response:</strong></h3>
+        <p class="h4">Response will appear here</p>
+
+    </pre>
+                <button class="copy-button" onclick="copyCode()">Copy</button>
+            </div>
+
+
+            <form method="post" action="" style="width: 40%; margin-right: 20px;">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="To1" class="form-label">To:</label>
+                    <input type="number" class="form-control" id="to1" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="From1" class="form-label">From:</label>
+                    <input type="number" class="form-control" value="+254772281679" id="from1"
+                           aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="messageBody1" class="form-label">Message Body:</label>
+                    <textarea class="form-control" id="messageBody1" style="height: 70px"></textarea>
+                </div>
+                <button type="submit" class="btn btn-info">Send your Reply</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+{% endif %}
+
+
+<script>
+
+    function updateLatestMessage() {
+const user = "{{ request.user.username }}";
+const config = {"serverUrl": "http://localhost:3001"};
+const loading = document.getElementById("loading");
+const senderNumber = document.getElementById("senderNumber");
+const messageBody = document.getElementById("_messageBody");
+const receivedTime = document.getElementById("receivedTime");
+const to = document.getElementById("to1");
+const from = document.getElementById("from1");
+
+<!--    fetch(`${config.serverUrl}/api/get-last-unread?user=${user}`)-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            if (data.message) {-->
+<!--                loading.style.display = "none";-->
+<!--                // Make the "From," "Message Body," and "Received Time" fields visible-->
+<!--                document.getElementById("_from").style.display = "block";-->
+<!--                document.getElementById("_body").style.display = "block";-->
+<!--                document.getElementById("_time").style.display = "block";-->
+
+<!--                // Update the content of the fields-->
+<!--                 senderNumber.textContent = `+${data.fromId.replace(/[^0-9]/g, "")}`;-->
+<!--                 to.textContent = `+${data.fromId.replace(/[^0-9]/g, "")}`;-->
+<!--                 from.textContent = `0712644581`;-->
+<!--                 messageBody.textContent = data.message;-->
+<!--                 const timestamp = new Date(data.date);-->
+<!--                 receivedTime.textContent = `${timestamp.getHours()}:${timestamp.getMinutes()} ${timestamp.toLocaleDateString()}`;-->
+<!--            } else {-->
+<!--                loading.style.display = "none";-->
+<!--                messageHeader.textContent = "No message found";-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error("Error:", error);-->
+<!--        });-->
+<!--}-->
+
+function sendReply() {
+const recipient = document.getElementById("To1").value;
+const message = document.getElementById("messageBody1").value;
+// Add code to send the reply message, similar to what I provided earlier
+}
+
+// Call the updateLatestMessage function to start checking for messages
+updateLatestMessage();
+
+// Update the latest message every second
+setInterval(updateLatestMessage, 1000);
+
+
+
+    // Get the input element and status span
+    const sniInput = document.getElementById('To');
+    const sniStatus = document.getElementById('sniStatus');
+    const submitButton = document.getElementById('submitButton');
+
+    // Function to update the SNI status
+    function updateSniStatus(status) {
+        sniStatus.innerHTML = status;
+    }
+
+    // Function to enable/disable the submit button based on input
+    function toggleSubmitButton() {
+        const inputValue = sniInput.value.trim();
+
+        if (inputValue.length > 0) {
+            submitButton.removeAttribute('disabled');
+        } else {
+            submitButton.setAttribute('disabled', true);
+        }
+    }
+
+    // Add an input event listener to the SNI input field
+    sniInput.addEventListener('input', toggleSubmitButton);
+
+    // Add a listener for the submit button click
+    submitButton.addEventListener('click', function () {
+        const inputValue = sniInput.value.trim();
+
+        // Make an AJAX request to the server (replace this with your server URL)
+        // You can use fetch or XMLHttpRequest for this.
+        // For simplicity, I'll use a setTimeout to simulate the server response.
+        setTimeout(function () {
+            // Simulate a server response (change this based on your server's response)
+            const isSniAvailable = inputValue === 'validSNI';
+
+            if (isSniAvailable) {
+                updateSniStatus('<i class="text-success bi bi-check-circle"></i> SNI available');
+            } else {
+                updateSniStatus('<i class="text-danger bi bi-x-circle"></i> SNI not available');
+            }
+        }, 1000); // Simulating a 1-second delay for the server response
+    });
+</script>
+
+
+{% endblock %}
+</div>

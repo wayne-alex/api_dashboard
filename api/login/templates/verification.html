@@ -1,0 +1,60 @@
+{% extends 'base_verification.html' %}
+
+{% load static %}
+
+{% block content %}
+
+ {% if not verification_code_sent %}
+   <main>
+        <div id="main-card" style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); width: 400px;">
+           <div id="info">
+                 <h1 style="font-size: 16px; color: #2a2929; text-align: center; font-weight: 600;">Verify phone Number</h1>
+                <div id="text">Verify your phone number through whatsapp <br> To restrict Multiple Account creations<br> hence safeguarding your account.</div>
+
+           <form  method="post" action="" style="margin-top: 20px;">
+               {% csrf_token %}
+  <div class="col-auto">
+
+  <div class="col-auto">
+    <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
+    <div class="input-group">
+      <div class="input-group-text">+254</div>
+      <input type="tel" class="form-control" name="tel" id="autoSizingInputGroup" placeholder="Enter valid phone Number" REQUIRED>
+    </div>
+  </div>
+  </div>
+      <button type="submit" class="btn btn-primary" style="margin-top :30px; ">Verify</button>
+               </form>
+        </div>
+        </div>
+    </main>
+{% else %}
+ <main>
+        <div id="main-card1" style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); width: 400px;">
+           <div id="info1">
+                 <h1 style="font-size: 16px; color: #2a2929; text-align: center; font-weight: 600;">Enter verification code</h1>
+                <div id="text">Enter 6 digit sent to you through whatsapp <br> You can only use one number per account<br> hence safeguarding your account.</div>
+
+           <form  method="post" action="" style="margin-top: 20px;">
+               {% csrf_token %}
+  <div class="col-auto">
+
+  <div class="col-auto">
+    <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
+    <div class="input-group">
+      <div class="input-group-text">code</div>
+      <input type="tel" name="code" class="form-control" id="autoSizingInputGroup1" placeholder="Enter a 6-digit code" REQUIRED>
+    </div>
+  </div>
+  </div>
+      <button type="submit" class="btn btn-primary" style="margin-top :30px;">Verify</button>
+               </form>
+        </div>
+        </div>
+    </main>
+{% endif %}
+
+    <script src="{% static 'Login/instavibe/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+{% endblock %}

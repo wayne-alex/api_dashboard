@@ -1,0 +1,138 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block content %}
+<style>
+    /* Style for the console window */
+ .console {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 5px;
+    max-height: 300px;
+    font-family: Arial, sans-serif; /* Change the font family here */
+    overflow-y: auto; /* Add this to enable vertical scrolling */
+}
+
+    /* Style for the copy button */
+    .copy-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="main-panel">
+    <p class="h3">Use our chatgpt Api.</p>
+    <div class="content-wrapper">
+        <p>This API service can greatly enhance customer interaction, enabling businesses to provide personalized and
+            relevant responses. It's a powerful tool that can be integrated into various applications, websites, or
+            platforms to create dynamic and engaging user experiences. Whether you're looking to provide customer
+            support, gather feedback, or offer recommendations, the ChatGPT API can play a vital role in facilitating
+            these interactions.
+
+
+        </p>
+
+        <div class="form-container" style="display: flex;">
+            <form method="post" action="{% url 'chatgpt_api' %}" style="width: 40%; margin-right: 20px;">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="messageBody" class="form-label">Message Body:</label>
+                    <input type="text" class="form-control" id="messageBody" name="messageBody"
+                           style="height: 70px; border: 1px solid black;">
+                </div>
+
+
+                <button type="submit" class="btn btn-info">Send</button>
+            </form>
+
+            <div class="console" id="code-console" style="width: 1000px;">
+    <pre id="code" style="white-space: pre-wrap;">
+        <h3><strong>Response:</strong></h3>
+        {% if not response %}
+        <p class="h4">Response will appear here</p>
+        {% else %}
+        <p class="h6"><span id="response-text">{{response}}</span></p>
+        {% endif %}
+    </pre>
+                <button class="copy-button" onclick="copyCode()">Copy</button>
+            </div>
+
+            <script>
+                // Function to trigger typing animation when the response is available
+                function showResponse(responseText) {
+                    const responseElement = document.getElementById("response-text");
+                    const typingAnimationElement = responseElement.previousElementSibling; // Get the typing animation span
+
+                    // Split the response text into characters
+                    const characters = responseText.split("");
+                    let index = 0;
+
+                    // Function to simulate typing animation
+                    function typeNextCharacter() {
+                        if (index < characters.length) {
+                            responseElement.textContent += characters[index];
+                            index++;
+                            setTimeout(typeNextCharacter, 30); // Adjust typing speed here
+                        }
+                    }
+
+                    // Start the typing animation
+                    typeNextCharacter();
+
+                    // Hide the typing animation span
+                    typingAnimationElement.style.display = "none";
+                }
+
+                // Simulate generating a response and trigger the typing animation when it's available
+                setTimeout(function () {
+                    const responseText = "{{ response }}"; // Enclose in double quotes
+                    showResponse(responseText);
+                }, 1000); // Simulate a delay for generating the response
+            </script>
+
+
+            <script>
+                const codeElement = document.getElementById('code');
+                const codeSnippet = `import client as api\n\n# Generate access Token\nToken = api.generate_token('waynealex', 'afgded768790-efadhbkjdf78jkfa')\n\nif not Token:\n    print('error generating token!')\nelse:\n    # Send request with the Token\n    message = 'Good morning?'\n    response = api.chatgpt(Token.token, message)\n    if response.status_code == 200:\n        print(response)\n    else:\n        print(response.status_code)`;
+
+                let index = 0;
+
+                function typeCode() {
+                    if (index < codeSnippet.length) {
+                        codeElement.textContent += codeSnippet.charAt(index);
+                        index++;
+                        setTimeout(typeCode, 50); // Adjust the typing speed here (milliseconds)
+                    }
+                }
+
+                typeCode();
+
+            const codeElement = document.getElementById('code1');
+            const codeSnippet = "{{ response }}";
+
+            let index = 0;
+
+            function typeCode1() {
+                if (index < codeSnippet.length) {
+                    codeElement.textContent += codeSnippet.charAt(index);
+                    index++;
+                    setTimeout(typeCode1, 50); // Corrected function name
+                }
+            }
+
+            typeCode1();
+            </script>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

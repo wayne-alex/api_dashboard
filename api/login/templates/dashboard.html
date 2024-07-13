@@ -1,0 +1,134 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="main-panel">
+    <p class="h1">Ahoy {{account.user_name}}, welcome to Api services</p>
+    <div class="content-wrapper">
+
+        <div class="row">
+            <div class="col-md-12 stretch-card grid-margin">
+                <div class="card bg-gradient-light card-img-holder text-black">
+                    <div class="card-body">
+                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <div style="display: flex; flex-direction: row; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <p class="h3"><strong>Read our API documentation.</strong></p>
+                                    <p class="lead" style="font-size: 14px;">
+                                        Dig into our API reference documentation for quickstarts and tutorials. <br>It
+                                        covers everything from SDKs in your favorite languages to<br> sample apps for
+                                        web, iOS, and Android.
+                                    </p>
+                                    <a href="#" class="btn btn-info">Read our API documentation <i
+                                            class="mdi mdi-arrow-right"></i>
+                                    </a>
+                                </div>
+                                <div style="flex: 1;">
+                                    <img src="{% static 'Login/images/api_image.svg' %}"
+                                         style="max-width: 100%; height: auto;">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 stretch-card grid-margin">
+                <div class="card bg-gradient-light card-img-holder text-black">
+                    <div class="card-body">
+                        <h1 class="display-4" style="font-size: 20px;">Account info</h1>
+
+                        <div class="mb-3">
+                            <label for="accountSID" class="form-label"><strong>Account SID</strong></label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control custom-input" placeholder="Account SID"
+                                       id="accountSID"
+                                       aria-label="accountPhone" aria-describedby="button-addon1" style="border: 1px solid black; font-size: 16px;
+    font-weight: bold;" value="{{account.account_sid}}">
+                                <button class="btn btn-outline-secondary copy-button" type="button" id="button-addon1"
+                                        style="border: 1px solid black;">
+                                    <i class="mdi mdi-content-copy mdi-24px text-primary"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="accountusername" class="form-label"><strong>Account username</strong></label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control custom-input" placeholder="Account username"
+                                       id="accountusername"
+                                       aria-label="accountPhone" aria-describedby="button-addon2" style="border: 1px solid black; font-size: 16px;
+    font-weight: bold;" value="{{account.user_name}}">
+                                <button class="btn btn-outline-secondary copy-button" type="button" id="button-addon2"
+                                        style="border: 1px solid black;">
+                                    <i
+                                            class="mdi mdi-content-copy mdi-24px text-primary"></i></button>
+                            </div>
+                        </div>
+
+                        <p><i class="mdi mdi-information" style="color: orange;"></i> Always store your credentials
+                            securely to protect your account.</p>
+
+                        <div class="mb-3">
+                            <label for="accountPhone" class="form-label"><strong>Api services phone
+                                number</strong></label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control custom-input"
+                                       placeholder="Api services Official Number"
+                                       id="accountPhone"
+                                       aria-label="accountPhone" aria-describedby="button-addon3" style="border: 1px solid black; font-size: 16px;
+    font-weight: bold;" value="+254772281679">
+                                <button class="btn btn-outline-secondary copy-button" type="button" id="button-addon3"
+                                        style="border: 1px solid black;">
+                                    <i
+                                            class="mdi mdi-content-copy mdi-24px text-primary"></i></button>
+                            </div>
+                        </div>
+                        <script>
+                            const copyButtons = document.querySelectorAll('.copy-button');
+
+                            copyButtons.forEach(button => {
+                                button.addEventListener('click', () => {
+                                    const input = button.previousElementSibling;
+                                    input.select();
+                                    document.execCommand('copy');
+                                    alert('info copied successfully')
+                                    input.deselect();
+                                });
+                            });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-light card-img-holder text-black">
+                    <div class="card-body">
+                        <h1 class="display-4" style="font-size: 20px;"><strong>Helpful Links</strong></h1>
+                        <a href="#">How does api services work? <i class="mdi mdi-open-in-new"></i></a>
+                        <p>
+                            Understand how our API works in less than 2 minutes.
+                        </p>
+                        <a href="#">Api Documentation <i class="mdi mdi-open-in-new"></i></a>
+                        <p>
+                            Learn the basics of Api services APIs
+                        </p>
+                        <a href="#">Support Help center <i class="mdi mdi-open-in-new"></i></a>
+                        <p>
+                            Troubleshoot common issues.
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © Api Services 2023</span>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
